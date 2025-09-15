@@ -1,4 +1,4 @@
-# Notepad++ Reds Plugin
+# Notepad++ Redis Plugin
 Simple Notepad++ plugin for view your keys and data from Redis.
 
 # Usage
