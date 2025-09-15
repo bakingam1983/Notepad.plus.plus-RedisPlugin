@@ -11,7 +11,7 @@ Save and close Notepad++
 4. Restart Notepad++ 
 5. Click in the menu Redis --> Show dialog    
 6. Plugin dialog appears<br>
-    ![](/Images/Dialog.png)
+    ![](/images/Dialog.png)<br>
     Check if Server Redis textbox is compiled with your server <code>Point 3</code>
 7. Click on Connect<br>
     Your keys should appear 
