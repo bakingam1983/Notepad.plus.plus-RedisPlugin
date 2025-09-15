@@ -6,6 +6,9 @@
     <_LastSelectedProfileId>I:\GitHub\RedisPlugin\RedisPlugin\Properties\PublishProfiles\FolderProfile-arm64.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

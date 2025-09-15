@@ -42,13 +42,21 @@ namespace RedisPlugin
 
             Utils.MakeSeparator();
 
+            //Utils.SetCommand(
+            //    "About",
+            //    () => MessageBox.Show(
+            //        $"This is {PluginName} version {AssemblyVersionString}\nCreated by: Andrea Baghin\nGithub: https://github.com/bakingam1983/Notepad.plus.plus-RedisPlugin",
+            //        $"About {PluginName}",
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Information),
+            //    new ShortcutKey(ctrl: true, alt: false, shift: true, Keys.F12));
+
             Utils.SetCommand(
                 "About",
-                () => MessageBox.Show(
-                    $"This is {PluginName} version {AssemblyVersionString}\nCreated by: Andrea Baghin\nGithub: ",
-                    $"About {PluginName}",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information),
+                () => { 
+                    var dialog = new AboutDialog();
+                    dialog.ShowDialog();
+                },
                 new ShortcutKey(ctrl: true, alt: false, shift: true, Keys.F12));
 
             // TODO: Add a command to manage plugin settings:
