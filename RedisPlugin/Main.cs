@@ -200,7 +200,7 @@ namespace RedisPlugin
             if (_form1 == null)
             {
                 IntPtr hFormIcon = PluginData.Notepad.IsDarkModeEnabled() ? _tbIcons.HToolbarIconDarkMode : _tbIcons.HToolbarIcon;
-                _form1 = new Form1(DialogIndex, $"{PluginName}.dll", Icon.FromHandle(hFormIcon));
+                _form1 = new Form1(DialogIndex, $"{PluginName}Plugin.dll", Icon.FromHandle(hFormIcon));
                 return;
             }
 
@@ -215,7 +215,7 @@ namespace RedisPlugin
         /// </summary>
         void SetToolBarIcons()
         {
-            var iconPath = Path.Combine(PluginData.Notepad.GetPluginsHomePath(), PluginName, "Icons");
+            var iconPath = Path.Combine(PluginData.Notepad.GetPluginsHomePath(), $"{PluginName}Plugin", "Icons");
             var bmpFile = Path.Combine(iconPath, "tbicon.bmp");
             var icoFile = Path.Combine(iconPath, "tbicon.ico");
             var icoFileDark = Path.Combine(iconPath, "tbicon_dark.ico");
