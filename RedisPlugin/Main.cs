@@ -139,7 +139,7 @@ namespace RedisPlugin
         /// <summary>
         /// Index within <see cref="PluginData.FuncItems"/> of the plugin command that launches the docking dialog.
         /// </summary>
-        static readonly int DialogIndex = 1;
+        static readonly int DialogIndex = 0;
 
         /// <summary>
         /// Default dimensions of a 16x16 BMP icon.
