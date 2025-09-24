@@ -4,6 +4,7 @@ using Npp.DotNet.Plugin;
 using Npp.DotNet.Plugin.Winforms;
 using Npp.DotNet.Plugin.Winforms.Classes;
 using StackExchange.Redis;
+using static StackExchange.Redis.ConnectionMultiplexer;
 
 namespace RedisPlugin
 {
@@ -196,13 +197,12 @@ namespace RedisPlugin
         private Label label1;
         private ListBox listBox1;
         static readonly NppTbMsg InitialDockPosition = NppTbMsg.DWS_DF_CONT_RIGHT;
-        ConnectionMultiplexer Redis;
         private Button BtnLoadKey;
         IniFile config;
         IDatabase RedisDb;
         private void BtnConnect_Click(object sender, EventArgs e)
         {
-            Redis = StackExchange.Redis.ConnectionMultiplexer.Connect(TxtRedisServer.Text, x => { x.AbortOnConnectFail=false; x.SyncTimeout=120000; });
+            using ConnectionMultiplexer Redis = Connect(TxtRedisServer.Text, x => { x.AbortOnConnectFail=false; x.SyncTimeout=120000; });
             var redisConnectionStatus = Redis.GetStatus();
             //MessageBox.Show(redisConnectionStatus, "Redis Connection Status", MessageBoxButtons.OK);
             var server = Redis.GetServer(TxtRedisServer.Text);
@@ -227,11 +227,9 @@ namespace RedisPlugin
         {
             base.Dispose(disposing);
 
-            if (disposing)
-            {
-                Redis.Close();
-                Redis.Dispose();
-            }
+            // if (disposing)
+            // {
+            // }
         }
     }
 }
