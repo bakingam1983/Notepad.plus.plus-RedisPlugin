@@ -3,10 +3,10 @@
   <PropertyGroup>
     <!-- https://learn.microsoft.com/dotnet/core/compatibility/serialization/8.0/publishtrimmed -->
     <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
-    <_LastSelectedProfileId>I:\GitHub\RedisPlugin\RedisPlugin\Properties\PublishProfiles\FolderProfile-arm64.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>I:\GitHub\RedisPlugin\RedisPlugin\Properties\PublishProfiles\NotepadPluginDirectory.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="AboutDialog.cs">
+    <Compile Update="Forms\AboutDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\Form1.cs">

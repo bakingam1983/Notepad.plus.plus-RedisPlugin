@@ -15,25 +15,8 @@ namespace RedisPlugin
         /// You can assume the application window handle is valid here.
         /// </summary>
         public void OnSetInfo()
-        {
-            // TODO: provide setup code, i.e., assign plugin commands to shortcut keys, load configuration data, etc.
-            // For example:
+        {       
             (int maj, int min, int patch) = PluginData.Notepad.GetNppVersion();
-
-            //Utils.SetCommand(
-            //    $"Read the release notes for Notepad++ {maj}.{min}.{patch}",
-            //    () =>
-            //    {
-            //        var exePath = PluginData.Notepad.GetNppPath();
-            //        if (!PluginData.Notepad.OpenFile(Path.Combine(exePath, "change.log")))
-            //        {
-            //            MessageBox.Show(
-            //                $"No \"change.log\" in \"{exePath}\"!",
-            //                "File not found",
-            //                MessageBoxButtons.OK,
-            //                MessageBoxIcon.Error);
-            //        }
-            //    });
 
             Utils.SetCommand(
                 "Show dialog",
@@ -41,16 +24,7 @@ namespace RedisPlugin
                 new ShortcutKey(ctrl: false, alt: true, shift: false, Keys.F10));
 
             Utils.MakeSeparator();
-
-            //Utils.SetCommand(
-            //    "About",
-            //    () => MessageBox.Show(
-            //        $"This is {PluginName} version {AssemblyVersionString}\nCreated by: Andrea Baghin\nGithub: https://github.com/bakingam1983/Notepad.plus.plus-RedisPlugin",
-            //        $"About {PluginName}",
-            //        MessageBoxButtons.OK,
-            //        MessageBoxIcon.Information),
-            //    new ShortcutKey(ctrl: true, alt: false, shift: true, Keys.F12));
-
+              
             Utils.SetCommand(
                 "About",
                 () => { 
@@ -90,8 +64,7 @@ namespace RedisPlugin
                         // TODO: perform late-phase initialization
                         break;
                     case NppMsg.NPPN_TBMODIFICATION:
-                        PluginData.FuncItems.RefreshItems();
-                        SetToolBarIcons();
+                        PluginData.FuncItems.RefreshItems();                     
                         break;
                     case NppMsg.NPPN_DARKMODECHANGED:
                         _form1?.ToggleDarkMode(PluginData.Notepad.IsDarkModeEnabled());
@@ -172,11 +145,7 @@ namespace RedisPlugin
             }
         }
 
-        /// <summary>
-        /// The toolbar icons associated with the docking dialog.
-        /// </summary>
-        ToolbarIconDarkMode _tbIcons = default;
-
+   
         /// <inheritdoc cref="Npp.DotNet.Plugin.Winforms.Classes.DockingForm"/>
         Form1? _form1 = null;
         #endregion
@@ -198,9 +167,8 @@ namespace RedisPlugin
         void ToggleDialog()
         {
             if (_form1 == null)
-            {
-                IntPtr hFormIcon = PluginData.Notepad.IsDarkModeEnabled() ? _tbIcons.HToolbarIconDarkMode : _tbIcons.HToolbarIcon;
-                _form1 = new Form1(DialogIndex, $"{PluginName}.dll", Icon.FromHandle(hFormIcon));
+            {    
+                _form1 = new Form1(DialogIndex, $"{PluginName}.dll",null);
                 return;
             }
 
@@ -208,72 +176,7 @@ namespace RedisPlugin
                 _form1.ShowDockingForm();
             else
                 _form1.HideDockingForm();
-        }
-
-        /// <summary>
-        /// Associate a clickable toolbar icon with the plugin command that launches the docking dialog.
-        /// </summary>
-        void SetToolBarIcons()
-        {
-            var iconPath = Path.Combine(PluginData.Notepad.GetPluginsHomePath(), PluginName, "Icons");
-            var bmpFile = Path.Combine(iconPath, "tbicon.bmp");
-            var icoFile = Path.Combine(iconPath, "tbicon.ico");
-            var icoFileDark = Path.Combine(iconPath, "tbicon_dark.ico");
-
-            if (File.Exists(bmpFile))
-            {
-                LoadToolbarIcon(LoadImageType.IMAGE_BITMAP, bmpFile, out _tbIcons.HToolbarBmp);
-            }
-            else
-            {
-                (int bmpX, int bmpY) = GetLogicalPixels(MinBmpSize, MinBmpSize);
-                using Bitmap bmp = new(bmpX, bmpY);
-                Graphics bmpIcon = Graphics.FromImage(bmp);
-                Rectangle rect = new(0, 0, bmpX, bmpY);
-                bmpIcon.FillRectangle(Brushes.BlueViolet, rect);
-                _tbIcons.HToolbarBmp = bmp.GetHbitmap();
-            }
-
-            if (File.Exists(icoFile))
-            {
-                LoadToolbarIcon(LoadImageType.IMAGE_ICON, icoFile, out _tbIcons.HToolbarIcon);
-            }
-            else
-            {
-                _tbIcons.HToolbarIcon = GetStandardIcon(WindowsIcon.IDI_APPLICATION);
-            }
-
-            if (File.Exists(icoFileDark))
-            {
-                LoadToolbarIcon(LoadImageType.IMAGE_ICON, icoFileDark, out _tbIcons.HToolbarIconDarkMode);
-            }
-            else
-            {
-                _tbIcons.HToolbarIconDarkMode = _tbIcons.HToolbarIcon;
-            }
-
-            PluginData.Notepad.AddToolbarIcon(DialogIndex, _tbIcons);
-        }
-
-        /// <summary>
-        /// Load a bitmap or icon from the given <paramref name="iconFile"/> and return the handle.
-        /// </summary>
-        static void LoadToolbarIcon(LoadImageType imgType, string iconFile, out IntPtr hImg)
-        {
-            hImg = Win32.NULL;
-            var loadFlags = LoadImageFlag.LR_LOADFROMFILE;
-            switch (imgType)
-            {
-                case LoadImageType.IMAGE_BITMAP:
-                    (int bmpX, int bmpY) = GetLogicalPixels(MinBmpSize, MinBmpSize);
-                    hImg = LoadImage(Win32.NULL, iconFile, imgType, bmpX, bmpY, loadFlags | LoadImageFlag.LR_LOADMAP3DCOLORS);
-                    break;
-                case LoadImageType.IMAGE_ICON:
-                    (int icoX, int icoY) = GetLogicalPixels(MinIcoSize, MinIcoSize);
-                    hImg = LoadImage(Win32.NULL, iconFile, imgType, icoX, icoY, loadFlags | LoadImageFlag.LR_LOADTRANSPARENT);
-                    break;
-            }
-        }
+        }             
         #endregion
     }
 }

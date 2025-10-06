@@ -59,5 +59,45 @@ namespace RedisPlugin.Forms {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Boolean simile a True.
+        /// </summary>
+        internal static bool Expiry_UserAddedColumn {
+            get {
+                object obj = ResourceManager.GetObject("Expiry.UserAddedColumn", resourceCulture);
+                return ((bool)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Boolean simile a True.
+        /// </summary>
+        internal static bool Key_UserAddedColumn {
+            get {
+                object obj = ResourceManager.GetObject("Key.UserAddedColumn", resourceCulture);
+                return ((bool)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Boolean simile a True.
+        /// </summary>
+        internal static bool Obj_UserAddedColumn {
+            get {
+                object obj = ResourceManager.GetObject("Obj.UserAddedColumn", resourceCulture);
+                return ((bool)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Boolean simile a True.
+        /// </summary>
+        internal static bool Size_UserAddedColumn {
+            get {
+                object obj = ResourceManager.GetObject("Size.UserAddedColumn", resourceCulture);
+                return ((bool)(obj));
+            }
+        }
     }
 }

@@ -1,9 +1,11 @@
 ﻿// Visit https://npp-dotnet.github.io/Npp.DotNet.Plugin to learn more.
 
+using Microsoft.VisualBasic;
 using Npp.DotNet.Plugin;
 using Npp.DotNet.Plugin.Winforms;
 using Npp.DotNet.Plugin.Winforms.Classes;
 using StackExchange.Redis;
+using System.Windows.Forms;
 
 namespace RedisPlugin
 {
@@ -23,6 +25,8 @@ namespace RedisPlugin
             config.Load(config.FilePath);
             //MessageBox.Show($"config.RedisDefaultServer: {config.RedisDefaultServer}", "Redis Debug", MessageBoxButtons.OK);
             TxtRedisServer.Text= config.RedisDefaultServer;
+
+            BtnLoadKey.Enabled=false;
         }
 
         /// <inheritdoc cref="FormBase.ToggleDarkMode"/>
@@ -44,28 +48,7 @@ namespace RedisPlugin
         /// <inheritdoc cref="FormBase.AttachEventHandlers"/>
         protected override void AttachEventHandlers()
         {
-            base.AttachEventHandlers();
-            //textBox1?.Focus();
-
-        }
-
-        private void Button1Click(object? sender, EventArgs e)
-        {
-            try
-            {
-                var p = new System.Diagnostics.Process();
-                p.StartInfo.FileName = @"https://npp-user-manual.org/docs/plugin-communication/#2036nppm_modelessdialog";
-                p.StartInfo.UseShellExecute = true;
-                p.Start();
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(
-                    $"{error.Message}\0",
-                    $"{error.GetType().Name}",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            base.AttachEventHandlers();     
         }
 
         #region Windows Form Designer generated code
@@ -77,13 +60,18 @@ namespace RedisPlugin
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
+            dataGridView1 = new DataGridView();
             tableLayoutPanel2 = new TableLayoutPanel();
             BtnConnect = new Button();
             TxtRedisServer = new TextBox();
             label1 = new Label();
-            listBox1 = new ListBox();
             BtnLoadKey = new Button();
+            Key = new DataGridViewTextBoxColumn();
+            Expiry = new DataGridViewTextBoxColumn();
+            Size = new DataGridViewTextBoxColumn();
+            Obj = new DataGridViewTextBoxColumn();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -91,8 +79,8 @@ namespace RedisPlugin
             // 
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Controls.Add(dataGridView1, 0, 1);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
-            tableLayoutPanel1.Controls.Add(listBox1, 0, 1);
             tableLayoutPanel1.Controls.Add(BtnLoadKey, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
@@ -103,6 +91,21 @@ namespace RedisPlugin
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanel1.Size = new Size(914, 600);
             tableLayoutPanel1.TabIndex = 2;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Key, Expiry, Size, Obj });
+            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.Location = new Point(3, 48);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.Size = new Size(908, 509);
+            dataGridView1.TabIndex = 3;
             // 
             // tableLayoutPanel2
             // 
@@ -150,15 +153,6 @@ namespace RedisPlugin
             label1.Text = "Server Redis:";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // listBox1
-            // 
-            listBox1.Dock = DockStyle.Fill;
-            listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(3, 48);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(908, 509);
-            listBox1.TabIndex = 1;
-            // 
             // BtnLoadKey
             // 
             BtnLoadKey.Dock = DockStyle.Fill;
@@ -169,6 +163,40 @@ namespace RedisPlugin
             BtnLoadKey.Text = "Load";
             BtnLoadKey.UseVisualStyleBackColor = true;
             BtnLoadKey.Click += BtnLoadKey_Click;
+            // 
+            // Key
+            // 
+            Key.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Key.HeaderText = "Key";
+            Key.MinimumWidth = 6;
+            Key.Name = "Key";
+            Key.ReadOnly = true;
+            // 
+            // Expiry
+            // 
+            Expiry.HeaderText = "Expiration";
+            Expiry.MinimumWidth = 6;
+            Expiry.Name = "Expiry";
+            Expiry.ReadOnly = true;
+            Expiry.Width = 125;
+            // 
+            // Size
+            // 
+            Size.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Size.HeaderText = "Size";
+            Size.MinimumWidth = 6;
+            Size.Name = "Size";
+            Size.ReadOnly = true;
+            Size.Width = 65;
+            // 
+            // Obj
+            // 
+            Obj.HeaderText = "Obj";
+            Obj.MinimumWidth = 6;
+            Obj.Name = "Obj";
+            Obj.ReadOnly = true;
+            Obj.Visible = false;
+            Obj.Width = 125;
             // 
             // Form1
             // 
@@ -181,6 +209,7 @@ namespace RedisPlugin
             Name = "Form1";
             Text = "Form1";
             tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
             ResumeLayout(false);
@@ -194,44 +223,148 @@ namespace RedisPlugin
         private Button BtnConnect;
         private TextBox TxtRedisServer;
         private Label label1;
-        private ListBox listBox1;
         static readonly NppTbMsg InitialDockPosition = NppTbMsg.DWS_DF_CONT_RIGHT;
-        ConnectionMultiplexer Redis;
         private Button BtnLoadKey;
         IniFile config;
-        IDatabase RedisDb;
-        private void BtnConnect_Click(object sender, EventArgs e)
-        {
-            Redis = StackExchange.Redis.ConnectionMultiplexer.Connect(TxtRedisServer.Text, x => { x.AbortOnConnectFail=false; x.SyncTimeout=120000; });
-            var redisConnectionStatus = Redis.GetStatus();
-            //MessageBox.Show(redisConnectionStatus, "Redis Connection Status", MessageBoxButtons.OK);
-            var server = Redis.GetServer(TxtRedisServer.Text);
-            var keys = server.Keys();
-
-            foreach (var key in keys)
+        private System.ComponentModel.IContainer components;
+        private DataGridViewTextBoxColumn Key;
+        private DataGridViewTextBoxColumn Expiry;
+        private DataGridViewTextBoxColumn Size;
+        private DataGridViewTextBoxColumn Obj;
+        private DataGridView dataGridView1;
+     
+        private async void BtnConnect_Click(object sender, EventArgs e)
+        {         
+            dataGridView1.Rows.Clear();
+         
+            if (string.IsNullOrEmpty(TxtRedisServer.Text))
             {
-                listBox1.Items.Add(key);
+                MessageBox.Show($"Set the server address", "Redis Plugin", MessageBoxButtons.OK);
+                return;
             }
-            RedisDb = Redis.GetDatabase();
+
+            try
+            {
+                using var redis = await StackExchange.Redis.ConnectionMultiplexer.ConnectAsync(TxtRedisServer.Text, x => { x.AbortOnConnectFail=true; x.SyncTimeout=30000; });
+
+                var server = redis.GetServer(TxtRedisServer.Text);
+                var keys = server.Keys();
+
+                var orderedKeys = keys.Where(x => !string.IsNullOrEmpty(x.ToString())).OrderBy(x => x.ToString());
+
+                foreach (var key in orderedKeys)
+                {
+                    var result = server.Execute("MEMORY", "USAGE", key);
+                    var value = result.ToString();
+                    if (result.Resp2Type== ResultType.Integer)
+                    {
+                        var val = int.Parse(value);
+                        //val in Bytes
+
+                        if (val<1024)
+                        {
+                            value= $"{val:0.00} B";
+                        }
+                        else
+                        {
+                            var valKB = val/1024.0;
+                            if (valKB>1024)
+                            {
+                                var valMB = valKB/1024.0;
+                                value= $"{valMB:0.00} MB";
+                            }
+                            else
+                            {
+                                value= $"{valKB:0.00} KB";
+                            }
+                        }
+                    }
+
+                    var expireTime = await redis.GetDatabase().KeyExpireTimeAsync(key);
+
+                    RedisKey newkey = new RedisKey()
+                    {
+                        KeyName = key,
+                        KeyExpiry=expireTime,
+                        KeyMemoryUsageResult = value
+                    };
+
+                    //the datagridrow is like this:
+                    //| KeyName | Expiry | KeyMemoryUsageResult | RedisKey |
+                    dataGridView1.Rows.Add(newkey.KeyName, newkey.KeyExpiry, newkey.KeyMemoryUsageResult, newkey);
+                }                
+            }
+            catch (RedisConnectionException rcex)
+            {
+                MessageBox.Show("Error in server connection, check the exception message:\n " + rcex.ToString(), "Redis plugin", MessageBoxButtons.OK);
+            }
+            catch (TimeoutException)
+            {
+                MessageBox.Show("Redis connection timeout, check the server address and/or if the server is online.", "Redis plugin", MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString(), "Redis plugin", MessageBoxButtons.OK);
+            }
+            finally
+            {
+                if (dataGridView1.Rows.Count>0)
+                {
+                    BtnLoadKey.Enabled=true;
+                }
+            }
 
         }                
-        private void BtnLoadKey_Click(object sender, EventArgs e)
+        private async void BtnLoadKey_Click(object sender, EventArgs e)
         {
-            var key = listBox1.SelectedItem.ToString();           
-            var tmp = RedisDb.StringGet(key);
-            PluginData.Notepad.FileNew();
-            PluginData.Editor.AddText(tmp);
+            if (dataGridView1.SelectedCells.Count==0)
+            {
+                MessageBox.Show($"Select a key to open.", "Redis Plugin", MessageBoxButtons.OK);
+                return;
+            }
+            
+            if (dataGridView1.SelectedCells.Count>0)
+            {
+                //the datagridrow is like this:
+                //| KeyName | Expiry | KeyMemoryUsageResult | RedisKey |
+                try
+                {
+                    var obj = dataGridView1.SelectedCells[0].OwningRow.Cells[3].Value as RedisKey;
+
+                    using var redis = await StackExchange.Redis.ConnectionMultiplexer.ConnectAsync(TxtRedisServer.Text, x => { x.AbortOnConnectFail=true; x.SyncTimeout=30000; });
+                    var redisDb = redis.GetDatabase();
+                    var tmp = await redisDb.StringGetAsync(obj.KeyName);
+                    PluginData.Notepad.FileNew();
+                    PluginData.Editor.AddText(tmp);
+                }
+                catch (TimeoutException)
+                {
+                    MessageBox.Show("Redis connection timeout, check the server address and/or if the server is online.", "Redis plugin", MessageBoxButtons.OK);
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.ToString(), "Redis plugin", MessageBoxButtons.OK);
+                }
+                
+            }            
         }
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
+            base.Dispose(disposing);            
+        }
+    }
+    public class RedisKey
+    {
+        public string KeyName { get; set; }
+        public DateTime? KeyExpiry { get; set; }
+        public string KeyMemoryUsageResult{get;set;}
 
-            if (disposing)
-            {
-                Redis.Close();
-                Redis.Dispose();
-            }
+        public override string ToString()
+        {
+            return KeyName + " | " + KeyMemoryUsageResult;
         }
     }
 }
