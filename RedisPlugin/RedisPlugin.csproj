@@ -98,4 +98,39 @@
     <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+	<PropertyGroup Condition="'$(PublishAot)' == 'true' and '$(Configuration)' == 'Release'">
+		<!-- Disattiva simboli gestiti -->
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+
+		<!-- Disattiva simboli nativi generati dal compilatore AOT -->
+		<IlcGeneratePdb>false</IlcGeneratePdb>
+		<IlcEmitDebugInfo>false</IlcEmitDebugInfo>
+		<IlcGenerateCompleteDebugInfo>false</IlcGenerateCompleteDebugInfo>
+		<StripSymbols>true</StripSymbols>
+
+		<!-- Evita che i simboli vengano inclusi nel bundle -->
+		<PublishSymbols>false</PublishSymbols>
+		<IncludeSymbolsInSingleFile>false</IncludeSymbolsInSingleFile>
+
+		<!-- Evita copia accidentale di .pdb nella cartella di output -->
+		<CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
+	</PropertyGroup>
+	
 </Project>
